@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player_Move_Prototype : MonoBehaviour
 {
-    [SerializedField] private float speed;
+    [SerializeField] private float speed;
     private Rigidbody2D body;
 
     private void Awake()
@@ -15,6 +15,17 @@ public class Player_Move_Prototype : MonoBehaviour
 
     private void Update()
     {
-        body.velocity = new Vector3(Input.GetAxis("Horizontal") * speed, body.velocity.y);
+        float horizontalInput = Input.GetAxis("Horizontal");
+        body.velocity = new Vector2(horizontalInput * speed, body.velocity.y);
+        
+        //Flip player when moving left-right
+        if(horizontalInput > 0.01f)
+            transform.localScale = Vector3.one;
+
+        else if(horizontalInput <  -0.01f)
+            transform.localScale = new Vector3(-1, 1, 1);
+
+        if(Input.GetKey(KeyCode.Space))
+            body.velocity = new Vector2(body.velocity.x, speed);
     }
 }
